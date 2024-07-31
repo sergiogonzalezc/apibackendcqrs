@@ -23,7 +23,7 @@ Este proyecto .NET es una API construida en .NET 8 con patron CQRS y multi-capas
 
 1. Para depuración con SQL local debe contar con SQL Server Express, SQL Server Standar o SQL Server Enterprise. Debe abrir SQL Management Studio o Azure Data Studio y ejecutar los pasos siguientes:
 - Crear manualmente una BD llamada **BD_Products** vacía.
-- Ejecutar el script **1_Create_Tables.sql** ubicado en la carpeta **BackEndProducts.Sql\Scripts-BD\**. Dicho script debe ejecutarlo en la BD nueva anteriormente creada. Este script creará la tabla **dbo.Products**.
+- Ejecutar el script **1_Create_Tables.sql** ubicado en la carpeta **BackEndProducts.Sql\Scripts-BD**. Dicho script debe ejecutarlo en la BD nueva anteriormente creada. Este script creará la tabla **dbo.Products**.
  
 
 2. Luego debe ir al archivo **appsettings.json** del proyecto **BackEndProducts.Api** y deberá editar la **cadenaConexion**, específicamente los valores marcados con **XXXXXX**:
@@ -40,8 +40,8 @@ Este proyecto .NET es una API construida en .NET 8 con patron CQRS y multi-capas
 
 Puede ejecutar la solución en contenedores Docker, debe contar con un servcio de Docker o Docker Desktop instalado en su equipo. Luego debe ir a la carpeta donde se encuentra la solución **BackEndProducts.sln**, y abrir una ventana cmd, y ejecutar el comando  **docker compose up**. Este comando descargará las imagenes de SQL Server 2019 y de la API, y luego creará y levantará dos contenedores: 
 
--Contenedor de API se iniciará en el puerto **13000**. Para validar: abrir al browser en **http://localhost:13000/swagger/index.html** debería ver la lista de métodos expuestos.
--Contenedor de SQL Server se iniciará en el puerto **9001**. Para validar: abrir **SQL Management Studio** o **Azure Data Studio**, y conectarse a **localhost:9001** y con usuario **sa** y password **Password1*** y debería ver el servidor sin bases de datos de usuario. Una vez ahí conetcado al servidor deberá: 
+- Contenedor de API se iniciará en el puerto **13000**. Puede validar abriendo un browser e ir a la URL **http://localhost:13000/swagger/index.html** debería ver la lista de métodos expuestos.
+- Contenedor de SQL Server se iniciará en el puerto **9001**. Puede validar abriendo **SQL Management Studio** o **Azure Data Studio**, y conectarse a **localhost:9001** y con usuario **sa** y password **Password1*** y debería ver el servidor sin bases de datos de usuario. Una vez ahí conetcado al servidor deberá: 
 - Crear una ueva Bade de datos: Si no a creado una Base de Datos nueva llamada **BD_Products**, favor creela manualmente. 
 - Ejecutar el script **1_Create_Tables.sql** ubicado en la carpeta **BackEndProducts.Sql\Scripts-BD\**. Dicho script debe ejecutarlo en la BD nueva anteriormente creada. Este script creará la tabla **dbo.Products**. 
 
