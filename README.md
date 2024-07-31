@@ -57,7 +57,6 @@ Puede ejecutar la api en forma local. Pasos:
 Puede ejecutar la api apuntando a contenedor Docker. Pasos:
 - Ir a la carpeta donde se encuentra la solución **BackEndProducts.sln**, y abrir una ventana cmd, y ejecutar el comando **docker compose up**. Este comando descargará las imagenes de SQL Server 2019 y de la API, y luego creará y levantará dos contenedores: 
 
--Contenedor de API se iniciará en el puerto **13000**. Para validar: abrir al browser en **http://localhost:13000/swagger/index.html** debería ver la lista de métodos expuestos.
--Contenedor de SQL Server se iniciará en el puerto **9001**.
+  - Contenedor de API se iniciará en el puerto **13000**. Para validar: abrir al browser en **http://localhost:13000/swagger/index.html** debería ver la lista de métodos expuestos.
+  - Contenedor de SQL Server, el que se iniciará en el puerto **9001**.
 
-- FIN -
