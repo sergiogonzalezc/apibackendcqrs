@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <Folder Include="Business\" />
+    <Folder Include="Querys\" />
   </ItemGroup>
 
 </Project>

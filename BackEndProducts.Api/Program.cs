@@ -82,8 +82,6 @@ foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
     builder.Services.AddValidatorsFromAssembly(assembly);
 }
 
-builder.Services.AddLazyCache();
-
 builder.Services.AddCarter();
 
 builder.Services.AddHsts(options =>

@@ -24,7 +24,7 @@ namespace BackEndProducts.Infraestructure.Repository
         private readonly IConnectionFactory _connectionFactory;
         private readonly IMemoryCache _memoryCache;
         private IWebHostEnvironment _currentEnvironment { get; }
-        private readonly TimeSpan _cacheDuration = TimeSpan.FromSeconds(5);  // Se asignan 5 minutos de duracion de CACHE
+        private readonly TimeSpan _cacheDuration = TimeSpan.FromMinutes(5);  // Se asignan 5 minutos de duracion de CACHE
 
         public ProductEFRepository(IConfiguration configuracion, IWebHostEnvironment env, IMemoryCache memoryCache)
         {

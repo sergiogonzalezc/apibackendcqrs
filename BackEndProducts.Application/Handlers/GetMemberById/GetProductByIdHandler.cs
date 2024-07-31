@@ -1,7 +1,6 @@
 ﻿using BackEndProducts.Application.Commands;
 using BackEndProducts.Application.Interface;
 using BackEndProducts.Application.Model;
-using BackEndProducts.Application.Querys;
 using FluentValidation;
 using MediatR;
 using System;
@@ -12,6 +11,16 @@ using System.Threading.Tasks;
 
 namespace BackEndProducts.Application.Handlers.GetProductById
 {
+    public class GetProductsByIdQuerys : IRequest<ProductDTO>
+    {
+        public int id { get; }
+
+        public GetProductsByIdQuerys(int id)
+        {
+            this.id = id;
+        }
+
+    }
 
     public class GetProductByIdHandlerValidationValidator : AbstractValidator<GetProductsByIdQuerys>
     {

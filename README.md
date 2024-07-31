@@ -1,10 +1,19 @@
 ## PRYECTO BACKEND ##
-Este proyecto .NET es una API construida en .NET 8 con patron CQRS y multi-capas. Funcionalidades:
+Este proyecto .NET es una API construida en .NET 8 con patrón CQRS y multi-capas. Funcionalidades:
 - inserta un producto, obtiene lista completa de productos en base a paginación.
 - inserta un producto nuevo. El campo de "descuento" lo obtiene de una API externa de mockapi.io
 - obtiene un producto por su ID.
 - actualiza un producto.
 
+
+Características:
+- Se pueden listar todos los productos usando parámtros de paginación.
+- Patron CQRS: se usa para endpoint de lectura el **ORM Dapper**, y para escritura **EF Core**.
+- Al insertar un nuevo producto, el descuento lo obtiene automáticamente leyendo de una api mockapi.io
+- Valdaciones de input de datos se hacen utilizando FluentValdition
+- Se registra el tiempo de cada request en un archivo (usando librería **NLog**) que queda alojado en archivo *\Bin\Log**
+- Al hacer un request al endpoint **Get por Id** se deja en caché durante 5 minutos los datos devuelto para ese Producto en base al campo **ProductId**.
+- Se incluyen pruebas unitarias.
 
 **Principales dependencias:**
 - [.NET Core 8]

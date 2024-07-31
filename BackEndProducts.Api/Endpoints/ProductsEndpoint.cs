@@ -2,7 +2,6 @@
 using BackEndProducts.Application.Commands;
 using BackEndProducts.Application.Handlers;
 using BackEndProducts.Application.Model;
-using BackEndProducts.Application.Querys;
 using BackEndProducts.Common;
 using BackEndProducts.Api.Model;
 using Carter;
@@ -21,6 +20,7 @@ using System.IO;
 using MySqlX.XDevAPI.Common;
 using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
+using BackEndProducts.Application.Handlers.GetProductById;
 
 namespace BackEndProducts.Api.Endpoints
 {

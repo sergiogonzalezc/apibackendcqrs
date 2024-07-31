@@ -1,7 +1,6 @@
 ﻿using BackEndProducts.Application.Commands;
 using BackEndProducts.Application.Interface;
 using BackEndProducts.Application.Model;
-using BackEndProducts.Application.Querys;
 using BackEndProducts.Application.CQRS;
 using FluentValidation;
 using MediatR;

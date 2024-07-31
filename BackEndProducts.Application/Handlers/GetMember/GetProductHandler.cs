@@ -2,7 +2,6 @@
 using BackEndProducts.Application.CQRS;
 using BackEndProducts.Application.Interface;
 using BackEndProducts.Application.Model;
-using BackEndProducts.Application.Querys;
 using MediatR;
 using System;
 using System.Collections.Generic;
