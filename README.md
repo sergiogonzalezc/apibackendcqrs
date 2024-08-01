@@ -13,9 +13,9 @@ Características:
 - Al insertar un nuevo producto el descuento lo obtiene automáticamente leyendo de una api mockapi.io
 - Al consultar un producto por ID, si no encontramos el producto en el caché, lo ingresamos al caché y se devolverá en la propiedad **StatusName** => "Active" (ingresado), con un tiempo de expiración/caducidad de 5 minutos en caché. Luego de ese tiempo devolverá en **StatusName** => "Inactive" (caducado o vencido).
 - Validaciones de input de datos se hacen utilizando FluentValdition.
-- Se registra el tiempo de cada request en un archivo (usando librería **NLog**) que queda alojado en archivo:
-  - Si se ejecuta en modo **DEBUG** local, el log de registro de tiempo quedará en la carpeta **BackEndProducts.Api\bin\Debug\net8.0\Logs**
-  - Si se ejecuta apuntando a API de DOCKER, el log de registro de tiempo quedará en el contenedor **containerproducts**, carpeta **App\Logs**
+- Se registra el tiempo de cada request en un archivo (usando librería **NLog**), el que quedará en la siguiente ubicación dependiendo de la manera en que ejecutará la API:
+  - Si se ejecuta en modo **DEBUG** local utilizando Visual Studio, el log de registro quedará en la carpeta **BackEndProducts.Api\bin\Debug\net8.0\Logs**
+  - Si se ejecuta apuntando a API de DOCKER, el log quedará en el contenedor **containerproducts**, carpeta **App\Logs**
 - Al hacer un request al endpoint **Get por Id** se deja en caché durante 5 minutos los datos devuelto para ese Producto en base al campo **ProductId**.
 - Se incluyen pruebas unitarias.
 
