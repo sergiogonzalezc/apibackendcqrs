@@ -8,6 +8,7 @@ Este proyecto .NET es una API construida en .NET 8 con patrón CQRS y multi-capa
 
 Características:
 - Solución compatible con Docker.
+- Utiliza Minimal API.
 - Se pueden listar todos los productos usando parámtros de paginación.
 - Implementado con Patron de segregación de responsabilidades de comandos y consultas (CQRS) con **ORM Dapper** y **EF Core 8**.
 - Al insertar un nuevo producto el descuento lo obtiene automáticamente leyendo de una api mockapi.io
