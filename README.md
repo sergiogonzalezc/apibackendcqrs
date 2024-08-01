@@ -54,16 +54,18 @@ Características:
 
 Puede ejecutar la solución en contenedores Docker, debe contar con un servcio de Docker o Docker Desktop instalado en su equipo. Luego debe ir a la carpeta donde se encuentra la solución **BackEndProducts.sln**, y abrir una ventana cmd, y ejecutar el comando  **docker compose up**. Este comando descargará las imagenes de SQL Server 2019 y de la API, y luego creará y levantará dos contenedores: 
 
-- Contenedor de API se iniciará en el puerto **13000**. Puede validar abriendo un browser e ir a la URL **http://localhost:13000/swagger/index.html** debería ver la lista de métodos expuestos.
+- Contenedor de API se iniciará en el puerto **13000**. 
 - Contenedor de SQL Server se iniciará en el puerto **9001**. Puede validar abriendo **SQL Management Studio** o **Azure Data Studio**, y conectarse a **localhost:9001** y con usuario **sa** y password **Password1*** y debería ver el servidor sin bases de datos de usuario. Una vez ahí conectado al servidor, deberá: 
   - Crear una nueva Base de datos: Si no a creado una Base de Datos nueva llamada **BD_Products**, favor creela manualmente. 
   - Ejecutar el script **1_Create_Tables.sql** ubicado en la carpeta **BackEndProducts.Sql\Scripts-BD\**. Dicho script debe ejecutarlo en la BD nueva anteriormente creada. Este script creará la tabla **dbo.Products**. 
+  
+- Puede validar abriendo un browser e ir a la URL **http://localhost:13000/swagger/index.html** debería ver la lista de métodos expuestos.
 
 ## Ejecución de API apuntando a BD local ##
 Puede ejecutar la api en forma local. Pasos:
 - Abrir la solución **BackEndProducts.sln** en **Visual Studio 2022**
 - Asigar el proyecto **BackEndProducts.Api** como proyecto por defecto de inicio.
-- Ejeuctar F5 para iniciar la depuración, la que se iniciará en el puerto **9000*, por lo que puede abrir el browser en la URL **http://localhost:13000/swagger/index.html** y podrá ver la lista de métodos expuestos.
+- Ejecutar F5 para iniciar la depuración, la que levantará la API en el puerto **9000**, por lo que puede abrir el browser en la URL **http://localhost:9000/swagger/index.html** y podrá ver la lista de métodos expuestos.
 - **Nota**: Para esta depuración local debe haber configurado previamente la cadena de conexión **cadenaConexion** del archivo **appsettings.json** ubicado en el proyecto **BackEndProducts.Api**, . y apuntar a su la base de datos local (SQL en puerto **1433** por defecto) o al la BD de Docker, puerto **9001**.
 
 
