@@ -87,7 +87,7 @@ namespace BackEndProducts.Infraestructure.Repository
             }
             catch (Exception ex)
             {
-                ServiceLog.Write(BackEndProducts.Common.Enum.LogType.WebSite, ex, "Error", $"===> CONector [{_dataBaseDBContext.Database.GetConnectionString}]...");
+                //ServiceLog.Write(BackEndProducts.Common.Enum.LogType.WebSite, ex, "Error", $"===> CONector [{_dataBaseDBContext.Database.GetConnectionString}]...");
 
                 throw;
             }

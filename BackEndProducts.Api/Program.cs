@@ -19,6 +19,7 @@ using System.Configuration;
 using static Org.BouncyCastle.Math.EC.ECCurve;
 using BackEndProducts.Application.Behaviors;
 using BackEndProducts.Application.Exceptions.Handler;
+using Autofac.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -91,6 +92,8 @@ builder.Services.AddHsts(options =>
 });
 
 builder.Services.AddOptions();
+
+builder.Services.AddMemoryCache();
 
 //Cross-Cutting Services
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();

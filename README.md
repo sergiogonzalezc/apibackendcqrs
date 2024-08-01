@@ -13,7 +13,9 @@ Características:
 - Valdaciones de input de datos se hacen utilizando FluentValdition
 - Se registra el tiempo de cada request en un archivo (usando librería **NLog**) que queda alojado en archivo *\Bin\Log**
 - Al hacer un request al endpoint **Get por Id** se deja en caché durante 5 minutos los datos devuelto para ese Producto en base al campo **ProductId**.
+- Se incluye script para crear tabla de Productos. En el mismo script se incluyen insert de 5 registros de productos prueba.
 - Se incluyen pruebas unitarias.
+
 
 **Principales dependencias:**
 - [.NET Core 8]

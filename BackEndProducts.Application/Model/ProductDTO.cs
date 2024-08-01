@@ -19,7 +19,7 @@ namespace BackEndProducts.Application.Model
         {
             get
             {
-                return (Status == 0) ? "Active" : "Inactive";
+                return (Status == 1) ? "Active" : "Inactive";
             }
         }
 

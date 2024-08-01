@@ -24,19 +24,12 @@ using BackEndProducts.Application.Handlers.GetProductById;
 
 namespace BackEndProducts.Api.Endpoints
 {
-    //public record GetProductsWithPaginationQuery(int? PageNumber = 1, int? PageSize = 10);
-
     public class ProductsEndpoint : ICarterModule
     {
-        private static Stopwatch _stopWatch = null;
+        private static Stopwatch _stopWatch = new Stopwatch();
         private static string cacheKey = "esto_es_una_llave_para_cache";
 
         private static Dictionary<int, string> estadosProducto = new Dictionary<int, string>();
-
-        public ProductsEndpoint()
-        {
-            _stopWatch = new Stopwatch();  
-        }
 
         public void AddRoutes(IEndpointRouteBuilder app)
         {
@@ -82,7 +75,7 @@ namespace BackEndProducts.Api.Endpoints
         /// <param name="mediator"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        public static async Task<List<ProductDTO>> GetProducts(IMemoryCache memoryCache, HttpContext context, ISender mediator, [AsParameters] GetProductsWithPaginationQuery request)
+        public static async Task<List<ProductDTO>> GetProducts(HttpContext context, ISender mediator, [AsParameters] GetProductsWithPaginationQuery request)
         {
             _stopWatch.Start();
 
@@ -117,7 +110,7 @@ namespace BackEndProducts.Api.Endpoints
             string path = context?.Request?.Path.Value;
 
             ServiceLog.Write(Common.Enum.LogType.WebSite, TraceLevel.Info, $"TIME_REGISTRY {nameof(GetProductsById)}", $"host: {host} path {path} Tiempo en segundos: [{_stopWatch.Elapsed.TotalSeconds}]");
-           
+
             return await mediator.Send(query);
         }
 
