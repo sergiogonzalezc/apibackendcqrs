@@ -7,12 +7,12 @@ Este proyecto .NET es una API construida en .NET 8 con patrón CQRS y multi-capa
 
 
 Características:
+- Solución compatible con Docker.
 - Se pueden listar todos los productos usando parámtros de paginación.
-- Patron CQRS: se usa para endpoint de lectura el **ORM Dapper**, y para escritura **EF Core**.
-- Al insertar un nuevo producto: 
-  - El descuento lo obtiene automáticamente leyendo de una api mockapi.io
-  - El producto ingesará al caché. 
-- Valdaciones de input de datos se hacen utilizando FluentValdition
+- Implementado con Patron de segregación de responsabilidades de comandos y consultas (CQRS) con **ORM Dapper** y **EF Core 8**.
+- Al insertar un nuevo producto el descuento lo obtiene automáticamente leyendo de una api mockapi.io
+- Al consultar un producto por ID, si no encontramos el producto en el caché, lo ingresamos al caché y se devolverá en la propiedad **StatusName** => "Active" (ingresado), con un tiempo de expiración/caducidad de 5 minutos en caché. Luego de ese tiempo devolverá en **StatusName** => "Inactive" (caducado o vencido).
+- Validaciones de input de datos se hacen utilizando FluentValdition.
 - Se registra el tiempo de cada request en un archivo (usando librería **NLog**) que queda alojado en archivo:
   - Si se ejecuta en modo **DEBUG** local, el log de registro de tiempo quedará en la carpeta **BackEndProducts.Api\bin\Debug\net8.0\Logs**
   - Si se ejecuta apuntando a API de DOCKER, el log de registro de tiempo quedará en la carpeta **BackEndProducts.Api\bin\Debug\net8.0\Logs**

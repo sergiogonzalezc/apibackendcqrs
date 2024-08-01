@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace BackEndProducts.Application.Model
 {
@@ -13,6 +15,7 @@ namespace BackEndProducts.Application.Model
 
         public string Name { get; set; }
 
+        [JsonIgnore]
         public int Status { get; set; }
 
         public string StatusName
