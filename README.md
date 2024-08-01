@@ -15,7 +15,7 @@ Características:
 - Validaciones de input de datos se hacen utilizando FluentValdition.
 - Se registra el tiempo de cada request en un archivo (usando librería **NLog**) que queda alojado en archivo:
   - Si se ejecuta en modo **DEBUG** local, el log de registro de tiempo quedará en la carpeta **BackEndProducts.Api\bin\Debug\net8.0\Logs**
-  - Si se ejecuta apuntando a API de DOCKER, el log de registro de tiempo quedará en la carpeta **BackEndProducts.Api\bin\Debug\net8.0\Logs**
+  - Si se ejecuta apuntando a API de DOCKER, el log de registro de tiempo quedará en el contenedor **containerproducts**, carpeta **App\Logs**
 - Al hacer un request al endpoint **Get por Id** se deja en caché durante 5 minutos los datos devuelto para ese Producto en base al campo **ProductId**.
 - Se incluyen pruebas unitarias.
 
