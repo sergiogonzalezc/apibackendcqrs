@@ -42,7 +42,7 @@ namespace BackEndProducts.Api.Endpoints.Tests
             var products = A.Fake<ICollection<ProductDTO>>();
             var productsList = A.Fake<List<ProductDTO>>();
             
-            var endpoint = ProductsEndpoint.GetProducts()
+            //var endpoint = ProductsEndpoint.GetProducts()
 
             var result = ProductsEndpoint.GetProducts(_context, _mediator, request);
             Xunit.Assert.IsType<Ok<List<ProductDTO>>>(result);

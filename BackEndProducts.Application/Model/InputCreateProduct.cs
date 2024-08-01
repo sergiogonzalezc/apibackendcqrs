@@ -14,7 +14,7 @@ namespace BackEndProducts.Application.Model
 
         public string Name { get; set; }
 
-        public int Status { get; set; }
+        //public int Status { get; set; }
 
         public int Stock { get; set; }
 

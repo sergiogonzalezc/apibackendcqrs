@@ -24,7 +24,26 @@ namespace BackEndProducts.Infraestructure.Repository
         private readonly IConnectionFactory _connectionFactory;
         private readonly IMemoryCache _memoryCache;
         private IWebHostEnvironment _currentEnvironment { get; }
-        private readonly TimeSpan _cacheDuration = TimeSpan.FromMinutes(5);  // Se asignan 5 minutos de duracion de CACHE
+        private readonly TimeSpan _cacheDuration = TimeSpan.FromSeconds(5);  // Se asignan 5 minutos de duracion de CACHE
+        private static List<int> listaIdCache = new List<int>();
+
+        //public sealed class Singleton
+        //{
+        //    private readonly static Singleton _instance = new Singleton();
+
+        //    private Singleton()
+        //    {
+        //    }
+
+        //    public static Singleton Instance
+        //    {
+        //        get
+        //        {
+        //            return _instance;
+        //        }
+        //    }
+        //}
+
 
         public ProductEFRepository(IConfiguration configuracion, IWebHostEnvironment env, IMemoryCache memoryCache)
         {
@@ -166,34 +185,35 @@ namespace BackEndProducts.Infraestructure.Repository
         /// <returns></returns>
         public async Task<ProductDTO> GetProductById(int productId)
         {
-            //ProductDTO productDTO = null;
+            ProductDTO productDTO = null;
+            string cacheKey = $"product-{productId}";
+
             try
             {
-                string cacheKey = $"product-{productId}";
-
-                // Si no encontramos el producto en el caché, lo ingresamos al cache , con un tiempo de expiración de por 5 minutos 
-                if (!_memoryCache.TryGetValue(cacheKey, out ProductDTO productDTO))
+                using (IDbConnection connection = new SqlConnection(_connString))
                 {
-                    using (IDbConnection connection = new SqlConnection(_connString))
-                    {
-                        connection.Open();
-                        productDTO = await connection.QuerySingleOrDefaultAsync<ProductDTO>(ProductQueries.AllProductById, new { ProductId = productId });
+                    connection.Open();
+                    productDTO = await connection.QuerySingleOrDefaultAsync<ProductDTO>(ProductQueries.AllProductById, new { ProductId = productId });
 
-                        if (productDTO != null)
+                    if (productDTO != null) {
+
+                        // Si no encontramos el producto en el caché, lo ingresamos al caché y lo dejamos Status = 1 (ingresado), y con un tiempo de expiración de por 5 minutos
+                        if (!_memoryCache.TryGetValue(cacheKey, out listaIdCache))
                         {
                             var cacheEntryOptions = new MemoryCacheEntryOptions()
                                             //.SetSlidingExpiration(_cacheDuration)
                                             .SetAbsoluteExpiration(_cacheDuration)
                                             .SetPriority(CacheItemPriority.Normal);
 
-                            _memoryCache.Set(cacheKey, productDTO, cacheEntryOptions);
+                            _memoryCache.Set(cacheKey, listaIdCache, cacheEntryOptions);
 
                             productDTO.Status = 1;
                         }
+                        else  // Si ya existe en el caché (luego de un tiempo de expiración de 5 minutos), lo dejamos Status = 0 (venciso o cadudado)
+                            productDTO.Status = 0;
+
                     }
                 }
-                else
-                    productDTO.Status = 0;
 
                 return productDTO;
             }

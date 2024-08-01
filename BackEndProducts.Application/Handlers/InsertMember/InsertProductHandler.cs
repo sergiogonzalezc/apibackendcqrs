@@ -29,9 +29,9 @@ namespace BackEndProducts.Application.Handlers.InsertProduct
             RuleFor(x => x.input.Name).NotEmpty().WithMessage("Valor requerido!");  // lanza error si es nulo o vacio el valor
             RuleFor(x => x.input.Name).MaximumLength(50).WithMessage("Valor debe ser inferior a 50 caracteres");  // lanza error si la cantidad de caracteres es mayor al valor especificado
 
-            RuleFor(x => x.input.Status)                        
-                        .InclusiveBetween(0, 1)
-                        .WithMessage("Valor no válido. Valor debe ser 0 o 1"); // lanza error si el valor está en ese rango
+            //RuleFor(x => x.input.Status)                        
+            //            .InclusiveBetween(0, 1)
+            //            .WithMessage("Valor no válido. Valor debe ser 0 o 1"); // lanza error si el valor está en ese rango
 
             RuleFor(x => x.input.Stock)                        
                         .LessThan(Int32.MaxValue).WithMessage("Valor no válido."); // lanza error si la cantidad de caracteres es mayor al valor especificado
