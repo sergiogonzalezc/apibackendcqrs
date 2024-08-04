@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BackEndProducts.Application.Errors
+namespace BackEndProducts.Application.Shared
 {
     /// <summary>
     /// Clase que maneja los mensajes de error de forma centralizada

@@ -1,6 +1,6 @@
 ﻿using BackEndProducts.Application.Commands;
 using BackEndProducts.Application.CQRS;
-using BackEndProducts.Application.Errors;
+using BackEndProducts.Application.Shared;
 using BackEndProducts.Application.Interface;
 using BackEndProducts.Application.Model;
 using FluentValidation;

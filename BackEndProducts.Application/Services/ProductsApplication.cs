@@ -4,7 +4,7 @@ using System.Text.Json.Nodes;
 using AutoMapper;
 using BackEndProducts.Application.Common;
 using BackEndProducts.Application.ConfiguracionApi;
-using BackEndProducts.Application.Errors;
+using BackEndProducts.Application.Shared;
 using BackEndProducts.Application.Interface;
 using BackEndProducts.Application.Model;
 using BackEndProducts.Common;

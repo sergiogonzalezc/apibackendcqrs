@@ -18,7 +18,7 @@ using BackEndProducts.Application.Handlers.InsertProduct;
 using BackEndProducts.Application.Interface;
 using Microsoft.Extensions.DependencyInjection;
 using FluentAssertions;
-using BackEndProducts.Application.Errors;
+using BackEndProducts.Application.Shared;
 
 namespace BackEndProducts.Api.Endpoints.Tests
 {

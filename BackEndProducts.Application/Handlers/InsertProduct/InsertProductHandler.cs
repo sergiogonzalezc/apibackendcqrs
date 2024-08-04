@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Xml.Linq;
 using FluentValidation.Results;
-using BackEndProducts.Application.Errors;
+using BackEndProducts.Application.Shared;
 
 namespace BackEndProducts.Application.Handlers.InsertProduct
 {
