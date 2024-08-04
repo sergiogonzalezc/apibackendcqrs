@@ -6,46 +6,68 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using BackEndProducts.Api.Endpoints;
-using BackEndProducts.Application.Handlers.GetProduct;
 using Microsoft.AspNetCore.Http;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using BackEndProducts.Application.Model;
 using AutoMapper;
-using FakeItEasy;
+using Moq;
+using BackEndProducts.Application.Commands;
+using BackEndProducts.Application.Handlers;
+using BackEndProducts.Application.Handlers.InsertProduct;
+using BackEndProducts.Application.Interface;
+using Microsoft.Extensions.DependencyInjection;
+using FluentAssertions;
+using BackEndProducts.Application.Errors;
 
 namespace BackEndProducts.Api.Endpoints.Tests
 {
     public class ProductsEndpointTests
     {
         #region ===[ Private Members ]=============================================================
-        private readonly HttpContext _context;
-        private readonly ISender _mediator;
-        private readonly GetProductsWithPaginationQuery request;
+        private readonly Mock<HttpContext> _context;
+        private readonly Mock<ISender> _mediator;
+        private readonly Mock<IProductApplication> _productService;
 
         #endregion
 
         #region ===[ Constructor ]=================================================================
         public ProductsEndpointTests()
         {
-            _context = A.Fake<HttpContext>();
-            _mediator = A.Fake<ISender>();
-            request = A.Fake<GetProductsWithPaginationQuery>();
+            _context = new();
+            _mediator = new();
+            _productService = new();
         }
 
 
         #endregion
-
+        /// <summary>
+        /// Valida la creacion de un producto
+        /// </summary>
         [Fact]
-        public void ShouldGetProductsListOK()
+        public async Task Handle_Sholuld_Return_FailureResult_When_ProductId_Is_negative_or_Zero()
         {
-            var products = A.Fake<ICollection<ProductDTO>>();
-            var productsList = A.Fake<List<ProductDTO>>();
-            
-            //var endpoint = ProductsEndpoint.GetProducts()
+            //Arrange
+            var input = new InputCreateProduct()
+            {
+                ProductId = -1,
+                Name = "test",
+                Description = "description",
+                Price = 0,
+                Stock = 10
+            };
 
-            var result = ProductsEndpoint.GetProducts(_context, _mediator, request);
-            Xunit.Assert.IsType<Ok<List<ProductDTO>>>(result);
+            var command = new InsertProductCommand(input);
+            var handler = new InsertProductHandler(_productService.Object);
+
+            
+            //Act
+            ResultRequestDTO result = await handler.Handle(command, default);
+
+            //Assert
+            result.Success!.Should().BeTrue();   // Se espera que sea FALSO este test
+            result.ErrorMessage.Should().Be(DomainErrors.ProductCreationNameInvalid.message);
+           
         }
     }
 }

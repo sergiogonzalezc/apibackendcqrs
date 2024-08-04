@@ -20,6 +20,9 @@ using static Org.BouncyCastle.Math.EC.ECCurve;
 using BackEndProducts.Application.Behaviors;
 using BackEndProducts.Application.Exceptions.Handler;
 using Autofac.Core;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,9 +68,16 @@ builder.Services.AddCors(options =>
 });
 
 
+//builder.Services.AddOpenApiDocument(document =>
+//{
+//    document.Title = "API de Consulta de productos!";
+//    document.Description = "Esta api permite insertar, leer registros por paginacion, leer registros por su ID, y actualizar un producto.";
+//});
+
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerDocument();
+//builder.Services.AddSwaggerGen();
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ErrorHandlingFilterAttribute>();
@@ -99,31 +109,39 @@ builder.Services.AddMemoryCache();
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
 builder.Services.AddHealthChecks();
-//    .AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
+
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "API de Consulta de productos",
+        Description = "Api Rest que permite insertar, leer registros por paginación, leer registros por su ID, y actualizar un producto",       
+        Contact = new OpenApiContact
+        {
+            Name = "Datos de Contacto",
+            Email = "sergio.gonzalez.c@gmail.com"
+           // Url = new Uri("https://example.com/contact").ToString()
+        }        
+    });
+});
+
 
 var app = builder.Build();
 
 
-// Ensure database is created during application startup
-//using (var scope = app.Services.CreateScope())
-//{
-//    var dbContext = scope.ServiceProvider.GetRequiredService<DBContextBackendCRUD>();
-//    await dbContext.Database.EnsureCreatedAsync();
-//}
-
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 }
 else
 {
     //Solo habilitado en producción
     app.UseSwagger();
     app.UseSwaggerUI();
-
-    //app.UseHsts();
+    app.UseHsts();
 }
 
 // define culture spanish CL
@@ -164,10 +182,6 @@ Process currentProcess = Process.GetCurrentProcess();
 GlobalDiagnosticsContext.Set("ProcessID", "PID " + currentProcess.Id.ToString());
 
 
-//app.UseExceptionHandler("/error");
-//app.UseExceptionHandler(exceptionHandlerApp
-//    => exceptionHandlerApp.Run(async context => await Results.Problem().ExecuteAsync(context)));
-
 app.Map("/error", () =>
                 {
                     ServiceLog.Write(BackEndProducts.Common.Enum.LogType.WebSite, System.Diagnostics.TraceLevel.Error, "INICIO_API", "An Error Occurred...!!");
@@ -179,13 +193,6 @@ app.UseRouting();
 app.UseResponseCaching();
 app.UseHttpsRedirection();
 app.MapControllers();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
-
-
 app.MapCarter();
 app.UseExceptionHandler(options => { });
 
