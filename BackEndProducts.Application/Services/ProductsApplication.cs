@@ -4,6 +4,7 @@ using System.Text.Json.Nodes;
 using AutoMapper;
 using BackEndProducts.Application.Common;
 using BackEndProducts.Application.ConfiguracionApi;
+using BackEndProducts.Application.Errors;
 using BackEndProducts.Application.Interface;
 using BackEndProducts.Application.Model;
 using BackEndProducts.Common;
@@ -48,7 +49,7 @@ namespace BackEndProducts.Application.Services
                     return new ResultRequestDTO
                     {
                         Success = false,
-                        ErrorMessage = "Error: código <ProductId> duplicado"
+                        ErrorMessage = DomainErrors.ProductCreationIdDuplicated.message,
                     };
                 }
 
@@ -56,7 +57,7 @@ namespace BackEndProducts.Application.Services
                 Product dataProduct = mapper.Map<InputCreateProduct, Product>(input);
 
                 dataProduct.Discount = await GetDiscountFromApi(input.ProductId) ?? 0;  // asigna descuento nulo si no encuentra el valor en la API
-                
+
                 result = await _productRepository.InsertProduct(dataProduct);
 
                 // generate output
@@ -65,7 +66,7 @@ namespace BackEndProducts.Application.Services
                     return new ResultRequestDTO
                     {
                         Success = false,
-                        ErrorMessage = "Error: try again"
+                        ErrorMessage = DomainErrors.ProductCreationGenericError.message,
                     };
                 }
                 else
@@ -97,7 +98,7 @@ namespace BackEndProducts.Application.Services
                 string baseUrl = _configuration.GetSection("DiscountApiConfig").GetSection("endpoint").Value;
 
                 if (string.IsNullOrEmpty(baseUrl))
-                    throw new Exception("Error reading endpoint Country API");
+                    throw new Exception(DomainErrors.ReadingConfig.message);
 
 
                 Api apiCountry = new Api(baseUrl, ConfiguracionApi.CallType.EnumCallType.Get);
@@ -128,7 +129,7 @@ namespace BackEndProducts.Application.Services
                             }
                         }
                         else
-                            throw new Exception("Error leyendo data de endpoint de descuentos");
+                            throw new Exception(DomainErrors.DiscountApiError.message);
                     }
                 }
                 else
@@ -148,12 +149,12 @@ namespace BackEndProducts.Application.Services
                     }
                     else
                         ServiceLog.Write(LogType.WebSite, System.Diagnostics.TraceLevel.Error, nameof(GetDiscountFromApi), "Respuesta Error!: Content [" + (response.Content == null ? "NULL" : response.Content.ReadAsStringAsync().Result + "]"));
-                                     
+
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error reading endpoint Country API: --> ${ex.Message}");
+                throw new Exception($"{DomainErrors.DiscountApiError.message}: --> ${ex.Message}");
             }
 
             return null;
@@ -176,7 +177,7 @@ namespace BackEndProducts.Application.Services
 
                 if (item == null)
                 {
-                    throw new Exception(string.Format("Record cannot modify! Id Product [{0}] was not found!", input.ProductId));
+                    throw new Exception(string.Format(DomainErrors.ErrorUpdatingProduct.message, input.ProductId));
                 }
                 else
                 {
@@ -200,7 +201,7 @@ namespace BackEndProducts.Application.Services
                     return new ResultRequestDTO
                     {
                         Success = true,
-                        ErrorMessage = "Error: try again"
+                        ErrorMessage = DomainErrors.ProductEditionGenericError.message
                     };
                 }
                 else
@@ -233,7 +234,7 @@ namespace BackEndProducts.Application.Services
         }
 
 
-       
+
         /// <summary>
         /// Valida si existe un producto en base a su nombre
         /// </summary>
@@ -262,12 +263,12 @@ namespace BackEndProducts.Application.Services
         public async Task<ProductDTO> GetProductsById(int productId)
         {
             if (productId < 0)
-                throw new Exception("Error: invalid code");
+                throw new Exception(DomainErrors.ProductCreationIdInvalid.message);
 
             ProductDTO outPut = await _productRepository.GetProductById(productId);
 
             if (outPut == null)
-                throw new Exception("Error: Product not found");
+                throw new Exception(DomainErrors.ProductCreationNotFound.message);
 
             return outPut;
 
