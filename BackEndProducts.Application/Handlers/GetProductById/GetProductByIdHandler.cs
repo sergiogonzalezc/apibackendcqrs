@@ -1,4 +1,5 @@
 ﻿using BackEndProducts.Application.Commands;
+using BackEndProducts.Application.Errors;
 using BackEndProducts.Application.Interface;
 using BackEndProducts.Application.Model;
 using FluentValidation;
@@ -29,7 +30,7 @@ namespace BackEndProducts.Application.Handlers.GetProductById
             RuleFor(x => x.id)
                         .NotEmpty()
                         .GreaterThan(0)
-                        .WithMessage("Valor no válido. Vuelva a intentar ingresando un valor mayor que cero"); // lanza error si es nulo o vacio el valor          
+                        .WithMessage(DomainErrors.ProductCreationIdEmpty.message); // lanza error si es nulo o vacio el valor          
         }
     }
 

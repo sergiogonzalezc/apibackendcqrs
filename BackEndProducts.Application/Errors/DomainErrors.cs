@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BackEndProducts.Application.Errors
 {
+    /// <summary>
+    /// Clase que maneja los mensajes de error de forma centralizada
+    /// </summary>
     public static class DomainErrors
     {
         public static readonly Error ProductCreationId = new Error() { code = 10, message = "Error: valor inválido" };
@@ -14,13 +17,15 @@ namespace BackEndProducts.Application.Errors
         public static readonly Error ProductCreationNameInvalid = new Error() { code = 20, message = "Valor debe ser inferior a 50 caracteres" };
         public static readonly Error ProductCreationNameIsEmpty = new Error() { code = 21, message = "Valor no válido. Vuelva a intentar ingresando un valor mayor que cero" };
 
-        public static readonly Error ProductCreationInvalidStock = new Error() { code = 30, message = "Error: stock no válido" };
-        public static readonly Error ProductCreationStockIsEmpty = new Error() { code = 31, message = "Error: stock no válido" };
+        public static readonly Error ProductCreationStatusInvalid = new Error() { code = 20, message = "Valor no válido. Valor debe ser 0 o 1" };
 
-        public static readonly Error ProductCreationPriceInvalid = new Error() { code = 40, message = "Valor no válido. Vuelva a intentar ingresando un valor mayor que cero" };
-        public static readonly Error ProductCreationPriceIsEmpty = new Error() { code = 41, message = "Error: precio unitario no válido" };
+        public static readonly Error ProductCreationInvalidStock = new Error() { code = 40, message = "Error: stock no válido" };
+        public static readonly Error ProductCreationStockIsEmpty = new Error() { code = 41, message = "Error: stock no válido" };
 
-        public static readonly Error ProductCreationDescriptionInvalid = new Error() { code = 51, message = "Valor no válido. Valor debe ser inferior a 100 caracteres" };
+        public static readonly Error ProductCreationPriceInvalid = new Error() { code = 50, message = "Valor no válido. Vuelva a intentar ingresando un valor mayor que cero" };
+        public static readonly Error ProductCreationPriceIsEmpty = new Error() { code = 51, message = "Error: precio unitario no válido" };
+
+        public static readonly Error ProductCreationDescriptionInvalid = new Error() { code = 61, message = "Valor no válido. Valor debe ser inferior a 100 caracteres" };
 
     }
 
