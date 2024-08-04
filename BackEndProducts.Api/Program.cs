@@ -141,7 +141,7 @@ else
     //Solo habilitado en producción
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseHsts();
+    //app.UseHsts();
 }
 
 // define culture spanish CL
