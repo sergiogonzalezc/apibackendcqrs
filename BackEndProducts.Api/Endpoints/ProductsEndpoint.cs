@@ -17,10 +17,10 @@ using NLog.Filters;
 using System.Diagnostics;
 using Microsoft.Extensions.Hosting;
 using System.IO;
-using MySqlX.XDevAPI.Common;
 using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
 using BackEndProducts.Application.Handlers.GetProductById;
+using BackEndProducts.Application.Shared;
 
 namespace BackEndProducts.Api.Endpoints
 {
@@ -121,7 +121,7 @@ namespace BackEndProducts.Api.Endpoints
         /// <param name="input"></param>
         /// <param name="mediator"></param>
         /// <returns></returns>
-        public static async Task<ResultRequestDTO> InsertProduct(HttpContext context, [FromBody] InputCreateProduct input, ISender mediator)
+        public static async Task<Result<ResultRequestDTO>> InsertProduct(HttpContext context, [FromBody] InputCreateProduct input, ISender mediator)
         {
             string nameMethod = nameof(InsertProduct);
 
@@ -130,7 +130,7 @@ namespace BackEndProducts.Api.Endpoints
             // Implement a CQRS for query/command responsibility segregation
 
             var query = new InsertProductCommand(input);
-            ResultRequestDTO result = await mediator.Send(query);
+            Result<ResultRequestDTO> result = await mediator.Send(query);
 
             _stopWatch.Stop();
             string host = context?.Request?.Host.Value;

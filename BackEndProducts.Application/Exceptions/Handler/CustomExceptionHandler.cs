@@ -1,17 +1,19 @@
-﻿using FluentValidation;
+﻿using BackEndProducts.Common;
+using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
+using static BackEndProducts.Common.Enum;
 
 namespace BackEndProducts.Application.Exceptions.Handler;
 public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext context, Exception exception, CancellationToken cancellationToken)
     {
-        logger.LogError(
-            "Error Message: {exceptionMessage}, Time of occurrence {time}",
-            exception.Message, DateTime.UtcNow);
+        //logger.LogError("Error Message: {exceptionMessage}, Time of occurrence {time}",            exception.Message, DateTime.UtcNow);
+        ServiceLog.Write(LogType.WebSite, exception, nameof(TryHandleAsync), "Error");
 
         (string Detail, string Title, int StatusCode) details = exception switch
         {

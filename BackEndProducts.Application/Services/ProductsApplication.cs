@@ -35,7 +35,7 @@ namespace BackEndProducts.Application.Services
         /// <param name="input"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<ResultRequestDTO> InsertProduct(InputCreateProduct input)
+        public async Task<Result<ResultRequestDTO>> InsertProduct(InputCreateProduct input)
         {
             string nameMethod = nameof(InsertProduct);
             bool result = false;
@@ -44,13 +44,9 @@ namespace BackEndProducts.Application.Services
             {
                 bool itemExist = await _productRepository.ExistsProductById(input.ProductId);
 
-                if (itemExist == true)
+                if (itemExist)
                 {
-                    return new ResultRequestDTO
-                    {
-                        Success = false,
-                        ErrorMessage = DomainErrors.ProductCreationIdDuplicated.message,
-                    };
+                    return Result<ResultRequestDTO>.Failure(DomainErrors.ProductCreationIdDuplicated.message);
                 }
 
                 var mapper = new MapperConfiguration(cfg => cfg.CreateMap<InputCreateProduct, Product>()).CreateMapper();
@@ -62,21 +58,9 @@ namespace BackEndProducts.Application.Services
 
                 // generate output
                 if (!result)
-                {
-                    return new ResultRequestDTO
-                    {
-                        Success = false,
-                        ErrorMessage = DomainErrors.ProductCreationGenericError.message,
-                    };
-                }
-                else
-                {
-                    return new ResultRequestDTO
-                    {
-                        Success = true,
-                        ErrorMessage = null,
-                    };
-                }
+                    return Result<ResultRequestDTO>.Failure(DomainErrors.ProductCreationGenericError.message);
+
+                return Result<ResultRequestDTO>.Success(new ResultRequestDTO() { Success = true });
 
             }
             catch (Exception ex)

@@ -60,14 +60,15 @@ namespace BackEndProducts.Api.Endpoints.Tests
             var command = new InsertProductCommand(input);
             var handler = new InsertProductHandler(_productService.Object);
 
-            
+
             //Act
-            ResultRequestDTO result = await handler.Handle(command, default);
+            Result<ResultRequestDTO> result = await handler.Handle(command, default);
 
             //Assert
-            result.Success!.Should().BeTrue();   // Se espera que sea FALSO este test
-            result.ErrorMessage.Should().Be(DomainErrors.ProductCreationNameInvalid.message);
-           
+            result.Should().NotBeNull();   // Se espera que no  sea NULO
+            result.IsSucess.Should().BeFalse();
+            result.Error.Should().Be(DomainErrors.ProductCreationIdInvalid.message);
+
         }
     }
 }

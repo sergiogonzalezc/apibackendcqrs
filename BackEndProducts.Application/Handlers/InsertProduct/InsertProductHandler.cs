@@ -46,7 +46,7 @@ namespace BackEndProducts.Application.Handlers.InsertProduct
         }
     }
 
-    public class InsertProductHandler : ICommandHandler<InsertProductCommand, ResultRequestDTO>
+    public class InsertProductHandler : ICommandHandler<InsertProductCommand, Result<ResultRequestDTO>>
     {
         private readonly IProductApplication _ProductService;
         
@@ -56,7 +56,7 @@ namespace BackEndProducts.Application.Handlers.InsertProduct
             _ProductService = ProductApplication;
         }
 
-        public async Task<ResultRequestDTO> Handle(InsertProductCommand request, CancellationToken cancellationToken)
+        public async Task<Result<ResultRequestDTO>> Handle(InsertProductCommand request, CancellationToken cancellationToken)
         {            
             return await _ProductService.InsertProduct(request.input);
         }

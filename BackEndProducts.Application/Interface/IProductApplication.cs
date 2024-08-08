@@ -1,11 +1,12 @@
 ﻿using BackEndProducts.Application.Common;
 using BackEndProducts.Application.Model;
+using BackEndProducts.Application.Shared;
 
 namespace BackEndProducts.Application.Interface
 {
     public interface IProductApplication
     {
-        public Task<ResultRequestDTO> InsertProduct(InputCreateProduct input);
+        public Task<Result<ResultRequestDTO>> InsertProduct(InputCreateProduct input);
 
 
         /// <summary>

@@ -7,10 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BackEndProducts.Application.CQRS;
+using BackEndProducts.Application.Shared;
 
 namespace BackEndProducts.Application.Commands
 {
-    public record InsertProductCommand(InputCreateProduct input) : ICommand<ResultRequestDTO>
+    public record InsertProductCommand(InputCreateProduct input) : ICommand<Result<ResultRequestDTO>>
     {
     }   
 }

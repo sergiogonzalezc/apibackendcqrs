@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FakeItEasy" Version="8.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.7" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
@@ -31,6 +30,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BackEndProducts.Api\BackEndProducts.Api.csproj" />
+    <ProjectReference Include="..\BackEndProducts.Application\BackEndProducts.Application.csproj" />
+    <ProjectReference Include="..\BackEndProducts.Infrasctructure\BackEndProducts.Infrasctructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
