@@ -23,6 +23,7 @@ using Autofac.Core;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using static BackEndProducts.Application.Exceptions.Handler.CustomExceptionHandler;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -159,7 +160,7 @@ app.UseRequestLocalization(new RequestLocalizationOptions
                 }
 });
 
-//app.UseMiddleware<ExceptionHandlingMiddleware>();
+//app.UseMiddleware<ValidationExceptionHandlingMiddleware>();
 
 app.UseCors("localhost");
 app.UseAuthentication();

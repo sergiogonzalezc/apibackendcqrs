@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Xml.Linq;
 using FluentValidation.Results;
 using BackEndProducts.Application.Shared;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace BackEndProducts.Application.Handlers.InsertProduct
 {
@@ -49,16 +50,19 @@ namespace BackEndProducts.Application.Handlers.InsertProduct
     public class InsertProductHandler : ICommandHandler<InsertProductCommand, Result<ResultRequestDTO>>
     {
         private readonly IProductApplication _ProductService;
-        
+        private readonly IValidator<InsertProductCommand> _validator;
 
-        public InsertProductHandler(IProductApplication ProductApplication)
+        public InsertProductHandler(IProductApplication ProductApplication, IValidator<InsertProductCommand> validator)
         {
             _ProductService = ProductApplication;
+            _validator = validator;
         }
 
-        public async Task<Result<ResultRequestDTO>> Handle(InsertProductCommand request, CancellationToken cancellationToken)
-        {            
-            return await _ProductService.InsertProduct(request.input);
+        public async Task<Result<ResultRequestDTO>> Handle(InsertProductCommand command, CancellationToken cancellationToken)
+        {
+            _validator.ValidateAndThrow(command); 
+
+            return await _ProductService.InsertProduct(command.input);
         }
     }
 }

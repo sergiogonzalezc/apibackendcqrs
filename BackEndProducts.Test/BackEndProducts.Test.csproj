@@ -31,11 +31,19 @@
   <ItemGroup>
     <ProjectReference Include="..\BackEndProducts.Api\BackEndProducts.Api.csproj" />
     <ProjectReference Include="..\BackEndProducts.Application\BackEndProducts.Application.csproj" />
+    <ProjectReference Include="..\BackEndProducts.Common\BackEndProducts.Common.csproj" />
     <ProjectReference Include="..\BackEndProducts.Infrasctructure\BackEndProducts.Infrasctructure.csproj" />
+    <ProjectReference Include="..\BackEndProducts.Logging\BackEndProducts.Logging.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
