@@ -33,7 +33,8 @@ namespace BackEndProducts.Common
             {
                 case LogType.WebSite:
                     {
-                        l = MyLogManager.Instance.GetLogger("WebSite");
+                        //l = LogManager.GetLogger("WebSite");
+                        l = MyLogManager.Instance.GetLogger("WebSite");                        
 
                         break;
                     }
