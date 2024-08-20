@@ -65,6 +65,8 @@ namespace BackEndProducts.Application.Services
             }
             catch (Exception ex)
             {
+                ServiceLog.Write(LogType.WebSite, ex, nameof(InsertProduct), "error");
+
                 throw;
             }
         }
@@ -199,6 +201,7 @@ namespace BackEndProducts.Application.Services
             }
             catch (Exception ex)
             {
+                ServiceLog.Write(LogType.WebSite, ex, nameof(UpdateProduct), "error");
                 throw;
             }
         }

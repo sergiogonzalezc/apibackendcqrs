@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using NLog;
+using NLog.Config;
 using static BackEndProducts.Common.Enum;
 
 namespace BackEndProducts.Common
@@ -31,19 +33,19 @@ namespace BackEndProducts.Common
             {
                 case LogType.WebSite:
                     {
-                        l = LogManager.GetLogger("WebSite");
+                        l = MyLogManager.Instance.GetLogger("WebSite");
 
                         break;
                     }
                 case LogType.ConsoleTask:
                     {
-                        l = LogManager.GetLogger("ConsoleTask");
+                        l = MyLogManager.Instance.GetLogger("ConsoleTask");
 
                         break;
                     }
                 default:
                     {
-                        l = LogManager.GetLogger("WebSite");
+                        l = MyLogManager.Instance.GetLogger("WebSite");
 
                         break;
                     }
@@ -74,19 +76,19 @@ namespace BackEndProducts.Common
             {
                 case LogType.WebSite:
                     {
-                        l = LogManager.GetLogger("WebSite");
+                        l = MyLogManager.Instance.GetLogger("WebSite");
 
                         break;
                     }
                 case LogType.ConsoleTask:
                     {
-                        l = LogManager.GetLogger("ConsoleTask");
+                        l = MyLogManager.Instance.GetLogger("ConsoleTask");
 
                         break;
                     }
                 default:
                     {
-                        l = LogManager.GetLogger("WebSite");
+                        l = MyLogManager.Instance.GetLogger("WebSite");
 
                         break;
                     }
@@ -126,6 +128,42 @@ namespace BackEndProducts.Common
 
                         break;
                     }
+            }
+        }
+    }
+
+    internal class MyLogManager
+    {
+        // A Logger dispenser for the current assembly (Remember to call Flush on application exit)
+        public static LogFactory Instance { get { return _instance.Value; } }
+        private static Lazy<LogFactory> _instance = new Lazy<LogFactory>(BuildLogFactory);
+
+        // 
+        // Use a config file located next to our current assembly dll 
+        // eg, if the running assembly is c:\path\to\MyComponent.dll 
+        // the config filepath will be c:\path\to\MyComponent.nlog 
+        // 
+        // WARNING: This will not be appropriate for assemblies in the GAC 
+        // 
+        private static LogFactory BuildLogFactory()
+        {
+            // Use name of current assembly to construct NLog config filename 
+           
+            string configFilePath = Path.Combine(Path.GetFullPath(AssemblyDirectory), "NLog.config");
+
+            LogFactory logFactory = new LogFactory();
+            logFactory.Configuration = new XmlLoggingConfiguration(configFilePath, true, logFactory);
+            return logFactory;
+        }
+
+        public static string AssemblyDirectory
+        {
+            get
+            {
+                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                UriBuilder uri = new UriBuilder(codeBase);
+                string path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(path);
             }
         }
     }

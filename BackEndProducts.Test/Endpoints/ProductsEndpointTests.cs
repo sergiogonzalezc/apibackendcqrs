@@ -21,6 +21,9 @@ using FluentAssertions;
 using BackEndProducts.Application.Shared;
 using FluentValidation.TestHelper;
 using FluentValidation;
+using NLog;
+using BackEndProducts.Common;
+using static BackEndProducts.Common.Enum;
 
 namespace BackEndProducts.Api.Endpoints.Tests
 {
@@ -145,37 +148,34 @@ namespace BackEndProducts.Api.Endpoints.Tests
         [Fact]
         public async Task Handle_Sholuld_Return_FailureResult_When_Id_Is_Duplicate()
         {
+            //var config = new NLog.Config.LoggingConfiguration();
+            //var memoryTarget = new NLog.Targets.MemoryTarget();
+            //memoryTarget.Layout = "${message}";   // Message format
+            //config.AddRuleForAllLevels(memoryTarget);
+            //LogManager.Configuration = config;
+
+            
             //Arrange
             var input = new InputCreateProduct()
             {
-                ProductId = 2,
+                ProductId = 1,
                 Name = "aaaaaaaa",
                 Description = "",
                 Price = 10,
                 Stock = 10
             };
                    
-            //var item = new Item { OrgUid = 123456, CheckDate = new DateTime(2020, 4, 1) };
-
             var command = new InsertProductCommand(input);
             var handler = new InsertProductHandler(_productService.Object, _validator.Object);
 
 
+
             //Act
-            //Valida el fluentValdation
             TestValidationResult<InsertProductCommand> response = _insertValidator.TestValidate(command);
             Result<ResultRequestDTO> result = await handler.Handle(command, default);
 
-            //Assert
-   
-
-            //Assert
-            //response.IsValid!.Should().BeTrue();  // debe devolver false
-            //response.Errors.Should().HaveCount(1);  // debe tener al menos un error
-            //response.Errors[0].Should().Be(DomainErrors.ProductCreationIdInvalid.message);
-
-            //Assert
-            //response.ShouldHaveValidationErrorFor(x => x.input.ProductId).Only();  // con "Only" solo sale ese mensaje
+            
+            //Assert            
             response.ShouldNotHaveValidationErrorFor(x => x.input.ProductId);
             response.ShouldNotHaveValidationErrorFor(x => x.input.Name);
             response.ShouldNotHaveValidationErrorFor(x => x.input.Stock);

@@ -15,11 +15,14 @@ using System.Xml.Linq;
 using FluentValidation.Results;
 using BackEndProducts.Application.Shared;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using AutoMapper;
+using BackEndProducts.Common;
+using static BackEndProducts.Common.Enum;
 
 namespace BackEndProducts.Application.Handlers.InsertProduct
 {
 
-    public class InsertProductHandlerValidationValidator: AbstractValidator<InsertProductCommand>
+    public class InsertProductHandlerValidationValidator : AbstractValidator<InsertProductCommand>
     {
         public InsertProductHandlerValidationValidator()
         {
@@ -27,7 +30,7 @@ namespace BackEndProducts.Application.Handlers.InsertProduct
                         .NotEmpty()
                         .GreaterThan(0)
                         .WithMessage(DomainErrors.ProductCreationIdEmpty.message); // lanza error si es nulo o vacio el valor
-                        
+
             RuleFor(x => x.input.Name).NotEmpty().WithMessage(DomainErrors.ProductCreationNameIsEmpty.message);  // lanza error si es nulo o vacio el valor
             RuleFor(x => x.input.Name).MaximumLength(50).WithMessage(DomainErrors.ProductCreationNameInvalid.message);  // lanza error si la cantidad de caracteres es mayor al valor especificado
 
@@ -35,15 +38,15 @@ namespace BackEndProducts.Application.Handlers.InsertProduct
             //            .InclusiveBetween(0, 1)
             //            .WithMessage("Valor no válido. Valor debe ser 0 o 1"); // lanza error si el valor está en ese rango
 
-            RuleFor(x => x.input.Stock)                        
+            RuleFor(x => x.input.Stock)
                         .LessThan(Int32.MaxValue).WithMessage(DomainErrors.ProductCreationInvalidStock.message); // lanza error si la cantidad de caracteres es mayor al valor especificado
 
-            RuleFor(x => x.input.Price)                        
+            RuleFor(x => x.input.Price)
                         .GreaterThan(0)
                         .WithMessage(DomainErrors.ProductCreationPriceInvalid.message); // lanza error si el valor es menor o igual al valor especificado          
 
             RuleFor(x => x.input.Description).MaximumLength(100).WithMessage(DomainErrors.ProductCreationDescriptionInvalid.message); // lanza error si el valor es menor o igual al valor especificado                                    
-            
+
         }
     }
 
@@ -60,10 +63,24 @@ namespace BackEndProducts.Application.Handlers.InsertProduct
 
         public async Task<Result<ResultRequestDTO>> Handle(InsertProductCommand command, CancellationToken cancellationToken)
         {
-            _validator.ValidateAndThrow(command); 
+            try
+            {
+                ServiceLog.Write(LogType.WebSite, System.Diagnostics.TraceLevel.Info, nameof(Handle), "Inicio");
 
-            return await _ProductService.InsertProduct(command.input);
+                _validator.ValidateAndThrow(command);
+
+                Result<ResultRequestDTO> outPut = await _ProductService.InsertProduct(command.input);
+
+                ServiceLog.Write(LogType.WebSite, System.Diagnostics.TraceLevel.Info, nameof(Handle), $" IsSucess: {outPut?.IsSucess}  msg: {outPut?.Error}");
+            
+                return outPut;
         }
+            catch (Exception ex)
+            {
+                ServiceLog.Write(LogType.WebSite, ex, nameof(Handle), "error");
+                throw;
+            }
+}
     }
 }
 
