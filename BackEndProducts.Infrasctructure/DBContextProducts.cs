@@ -12,12 +12,16 @@ using Microsoft.AspNetCore.Hosting;
 using Autofac.Core;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Hosting;
+using FluentAssertions.Common;
+using System.IO;
+using System.Reflection;
 
 namespace BackEndProducts.Infraestructure
 {
     public class DBContextProducts : DbContext
     {
         private IWebHostEnvironment _currentEnvironment { get; }
+        private readonly IConfiguration _configuracion;
 
         private string _connString { get; set; }
 
@@ -28,16 +32,17 @@ namespace BackEndProducts.Infraestructure
             _connString = String.Empty;
         }
 
-        public DBContextProducts(string cadenaConexion)
+        public DBContextProducts(DbContextOptions<DBContextProducts> dbContextOptions, string cadenaConexion) : base(dbContextOptions)
         {
             _connString = cadenaConexion;
         }
-        public DBContextProducts(DbContextOptions<DBContextProducts> dbContextOptions, IWebHostEnvironment env) : base(dbContextOptions)
+        public DBContextProducts(IConfiguration configuracion, DbContextOptions<DBContextProducts> dbContextOptions, IWebHostEnvironment env) : base(dbContextOptions)
         {
             try
             {
                 _currentEnvironment = env;
-                _connString = Database.GetDbConnection().ConnectionString ?? String.Empty;                               
+                _configuracion = configuracion;
+                //_connString = Database.GetDbConnection().ConnectionString ?? String.Empty;
 
             }
             catch (Exception ex)
@@ -65,9 +70,19 @@ namespace BackEndProducts.Infraestructure
                         _connString = $"Server={servidorbd},{puerto};Initial Catalog={basedatos};User ID={user};Password={contrasenna};TrustServerCertificate=true";
                     }
                     else
-                        _connString = Database.GetDbConnection().ConnectionString ?? String.Empty;
+                    {
+                        //   _connString = Database.GetDbConnection().ConnectionString ?? String.Empty;
+                        //string path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                        //ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+                        //IConfigurationRoot builder = configurationBuilder.SetBasePath(path)
+                        //                                   .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                        //                                   .Build();
 
-                    optionsBuilder.UseSqlServer(_connString);                    
+                        //_connString = builder.GetConnectionString("stringConnection");                        
+
+                        _connString = _configuracion.GetConnectionString("stringConnection");
+                    }
+                    optionsBuilder.UseSqlServer(_connString);
                 }
             }
             catch (Exception ex)

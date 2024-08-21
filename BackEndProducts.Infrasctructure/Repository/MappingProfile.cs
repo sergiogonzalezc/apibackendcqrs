@@ -11,9 +11,25 @@ namespace BackEndProducts.Infraestructure.Repository
 {
     public class MappingProfile : Profile
     {
+        //public MappingProfile()
+        //{
+        //    CreateMap<ProductEF, Product>().ReverseMap();
+        //}
+
+        public MapperConfiguration MapperConfiguration
+        {
+            get
+            {
+                return new MapperConfiguration(x =>
+                {
+                    CreateMap<ProductEF, Product>().ReverseMap();
+                });
+            }
+        }
+
         public MappingProfile()
         {
-            CreateMap<ProductEF, Product>().ReverseMap();
-        }       
+        }
+
     }
 }

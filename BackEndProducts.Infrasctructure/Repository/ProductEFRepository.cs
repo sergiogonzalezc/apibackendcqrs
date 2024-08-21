@@ -17,11 +17,11 @@ namespace BackEndProducts.Infraestructure.Repository
 {
     public class ProductEFRepository : IProductRepository
     {
-        private readonly string _connString;
+        //private readonly string _connString;
         private readonly IConfiguration _configuracion;
         private DBContextProducts _dataBaseDBContext;
-        private Mapper _mapper;
-        private readonly IConnectionFactory _connectionFactory;
+        private IMapper _mapper;
+        //private readonly IConnectionFactory _connectionFactory;
         private readonly IMemoryCache _memoryCache;
         private IWebHostEnvironment _currentEnvironment { get; }
         private readonly TimeSpan _cacheDuration = TimeSpan.FromMinutes(5);  // Se asignan 5 minutos de duracion de CACHE
@@ -45,46 +45,97 @@ namespace BackEndProducts.Infraestructure.Repository
         //}
 
 
-        public ProductEFRepository(IConfiguration configuracion, IWebHostEnvironment env, IMemoryCache memoryCache)
+        //public ProductEFRepository(IConfiguration configuracion, IWebHostEnvironment env, IMemoryCache memoryCache, DBContextProducts dataBaseDBContext)
+        //{
+        //    _dataBaseDBContext = dataBaseDBContext;
+        //    _currentEnvironment = env;
+        //    _configuracion = configuracion;
+        //_connString = _configuracion.GetConnectionString("stringConnection");
+
+        //ServiceLog.Write(BackEndProducts.Common.Enum.LogType.WebSite, System.Diagnostics.TraceLevel.Info, nameof(ProductEFRepository), $"CONEXION A BD por defecto [{_connString}...");
+
+        //var opcionesDBContext = new DbContextOptionsBuilder<DBContextProducts>();
+        ////opcionesDBContext.UseMySQL(_cadenaConexion);
+
+        //// Si es desarrollo, se usa la BD local. En cambio, si es producción, se usa la BD de DOCKER
+        //if (!_currentEnvironment.IsDevelopment())
+        //{
+        //    var servidorbd = Environment.GetEnvironmentVariable("DB_SERVER_HOST") ?? @"THEKONES-PC\\SQLEXPRESS";
+        //    var puerto = Environment.GetEnvironmentVariable("DB_SERVER_PORT") ?? @"1433";
+        //    var basedatos = Environment.GetEnvironmentVariable("DB_NAME");
+        //    var user = Environment.GetEnvironmentVariable("DB_USER");
+        //    var contrasenna = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
+
+        //    //_connString = $"Server={servidorbd},{puerto};Initial Catalog={basedatos};User ID={user};Password={contrasenna};TrustServerCertificate=true;";
+        //    _connString = $"Data Source={servidorbd};Initial Catalog={basedatos};User ID={user};Password={contrasenna};TrustServerCertificate=true;Encrypt=False";
+        //}
+
+        //opcionesDBContext.UseSqlServer(_connString);
+
+        //ServiceLog.Write(BackEndProducts.Common.Enum.LogType.WebSite, System.Diagnostics.TraceLevel.Info, nameof(ProductEFRepository), $"NEW CONEXION A BD [{_connString}...");
+
+
+        //_dataBaseDBContext = new DBContextProducts(opcionesDBContext.Options, _currentEnvironment);
+
+        //MapperConfiguration config = new MapperConfiguration(cfg =>
+        //{
+        //    cfg.CreateMap<ProductEF, Product>().ReverseMap();
+        //}
+        //);
+
+        //_mapper = new Mapper(config);
+
+        //    MappingProfile mappingProfile = new MappingProfile();
+        //    _mapper = mappingProfile.MapperConfiguration.CreateMapper();
+
+        //    _memoryCache = memoryCache;
+        //}
+
+        public ProductEFRepository(IMemoryCache memoryCache, IConfiguration configuracion, DBContextProducts dataBaseDBContext)
         {
-            _currentEnvironment = env;
+            _dataBaseDBContext = dataBaseDBContext;
+            _memoryCache = memoryCache;
             _configuracion = configuracion;
-            _connString = _configuracion.GetConnectionString("stringConnection");
+
+            //_connString = _configuracion.GetConnectionString("stringConnection");
 
             //ServiceLog.Write(BackEndProducts.Common.Enum.LogType.WebSite, System.Diagnostics.TraceLevel.Info, nameof(ProductEFRepository), $"CONEXION A BD por defecto [{_connString}...");
 
-            var opcionesDBContext = new DbContextOptionsBuilder<DBContextProducts>();
-            //opcionesDBContext.UseMySQL(_cadenaConexion);
+            //var opcionesDBContext = new DbContextOptionsBuilder<DBContextProducts>();
+            ////opcionesDBContext.UseMySQL(_cadenaConexion);
 
-            // Si es desarrollo, se usa la BD local. En cambio, si es producción, se usa la BD de DOCKER
-            if (!_currentEnvironment.IsDevelopment())
-            {
-                var servidorbd = Environment.GetEnvironmentVariable("DB_SERVER_HOST") ?? @"THEKONES-PC\\SQLEXPRESS";
-                var puerto = Environment.GetEnvironmentVariable("DB_SERVER_PORT") ?? @"1433";
-                var basedatos = Environment.GetEnvironmentVariable("DB_NAME");
-                var user = Environment.GetEnvironmentVariable("DB_USER");
-                var contrasenna = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
+            //// Si es desarrollo, se usa la BD local. En cambio, si es producción, se usa la BD de DOCKER
+            //if (!_currentEnvironment.IsDevelopment())
+            //{
+            //    var servidorbd = Environment.GetEnvironmentVariable("DB_SERVER_HOST") ?? @"THEKONES-PC\\SQLEXPRESS";
+            //    var puerto = Environment.GetEnvironmentVariable("DB_SERVER_PORT") ?? @"1433";
+            //    var basedatos = Environment.GetEnvironmentVariable("DB_NAME");
+            //    var user = Environment.GetEnvironmentVariable("DB_USER");
+            //    var contrasenna = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
 
-                //_connString = $"Server={servidorbd},{puerto};Initial Catalog={basedatos};User ID={user};Password={contrasenna};TrustServerCertificate=true;";
-                _connString = $"Data Source={servidorbd};Initial Catalog={basedatos};User ID={user};Password={contrasenna};TrustServerCertificate=true;Encrypt=False";
-            }
+            //    //_connString = $"Server={servidorbd},{puerto};Initial Catalog={basedatos};User ID={user};Password={contrasenna};TrustServerCertificate=true;";
+            //    _connString = $"Data Source={servidorbd};Initial Catalog={basedatos};User ID={user};Password={contrasenna};TrustServerCertificate=true;Encrypt=False";
+            //}
 
-            opcionesDBContext.UseSqlServer(_connString);
+            //opcionesDBContext.UseSqlServer(_connString);
 
             //ServiceLog.Write(BackEndProducts.Common.Enum.LogType.WebSite, System.Diagnostics.TraceLevel.Info, nameof(ProductEFRepository), $"NEW CONEXION A BD [{_connString}...");
 
 
-            _dataBaseDBContext = new DBContextProducts(opcionesDBContext.Options, _currentEnvironment);
+            //_dataBaseDBContext = new DBContextProducts(opcionesDBContext.Options, _currentEnvironment);
 
             MapperConfiguration config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<ProductEF, Product>().ReverseMap();
-            }
-            );
+            });
 
             _mapper = new Mapper(config);
-            _memoryCache = memoryCache;
+
+            //MappingProfile mappingProfile = new MappingProfile();
+            //_mapper = mappingProfile.MapperConfiguration.CreateMapper();
+
         }
+
 
         #region Product
 
@@ -96,7 +147,7 @@ namespace BackEndProducts.Infraestructure.Repository
         public async Task<bool> InsertProduct(Product input)
         {
             try
-            {
+            {                
                 ProductEF ProductBD = _mapper.Map<ProductEF>(input);
 
                 _dataBaseDBContext.ProductEF.Add(ProductBD);
@@ -137,7 +188,8 @@ namespace BackEndProducts.Infraestructure.Repository
         {
             try
             {
-                using (IDbConnection connection = new SqlConnection(_connString))
+                //using (IDbConnection connection = new SqlConnection(_connString))
+                using (IDbConnection connection = new SqlConnection(_dataBaseDBContext.Database.GetDbConnection().ConnectionString))
                 {
                     connection.Open();
                     var result = await connection.QuerySingleOrDefaultAsync<ProductDTO>(ProductQueries.AllProductById, new { ProductId = productId });
@@ -161,7 +213,8 @@ namespace BackEndProducts.Infraestructure.Repository
         {
             try
             {
-                using (IDbConnection connection = new SqlConnection(_connString))
+                //using (IDbConnection connection = new SqlConnection(_connString))
+                using (IDbConnection connection = new SqlConnection(_dataBaseDBContext.Database.GetDbConnection().ConnectionString))
                 {
                     connection.Open();
                     var result = await connection.QueryAsync<ProductDTO>(ProductQueries.AllProduct, new { @PageSize = pageSize, PageNumber = pageNumber });
@@ -190,12 +243,14 @@ namespace BackEndProducts.Infraestructure.Repository
 
             try
             {
-                using (IDbConnection connection = new SqlConnection(_connString))
+                //using (IDbConnection connection = new SqlConnection(_connString))
+                using (IDbConnection connection = new SqlConnection(_dataBaseDBContext.Database.GetDbConnection().ConnectionString))
                 {
                     connection.Open();
                     productDTO = await connection.QuerySingleOrDefaultAsync<ProductDTO>(ProductQueries.AllProductById, new { ProductId = productId });
 
-                    if (productDTO != null) {
+                    if (productDTO != null)
+                    {
 
                         // Si no encontramos el producto en el caché, lo ingresamos al caché y lo dejamos Status = 1 (ingresado), y con un tiempo de expiración de por 5 minutos
                         if (!_memoryCache.TryGetValue(cacheKey, out listaIdCache))

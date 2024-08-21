@@ -24,6 +24,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using static BackEndProducts.Application.Exceptions.Handler.CustomExceptionHandler;
+using FluentAssertions.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +43,12 @@ builder.Services.AddScoped<IProductApplication, ProductsApplication>();
 builder.Services.AddScoped<IProductRepository, ProductEFRepository>();
 builder.Services.AddScoped(typeof(IProductApplication), typeof(ProductsApplication));
 builder.Services.AddScoped(typeof(IProductRepository), typeof(ProductEFRepository));
+
+//string connectionStringsData = builder.Configuration.GetSection("ConnectionStrings").GetValue<string>("stringConnection");
+
+//builder.Services.AddDbContext<DBContextProducts>(x => x.UseSqlServer(connectionStringsData, x => x.EnableRetryOnFailure()));
+builder.Services.AddDbContext<DBContextProducts>();
+
 
 builder.Services.AddCors(options =>
 {
